@@ -12,7 +12,6 @@ export async function connectDB() {
         });
         db.on("error", (error) => {
             console.error("Error connecting to MongoDB:", error);
-            
             process.exit(1);
         });
         await mongoose.connect(uri);
