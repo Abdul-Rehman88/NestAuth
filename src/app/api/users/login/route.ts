@@ -6,6 +6,13 @@ import jwt from "jsonwebtoken";
 
 connectDB();
 
+interface MyTokenPayload {
+  id: string;
+  username: string;
+  email: string;
+  // add other fields you signed into the token
+}
+
 export async function POST(request: NextRequest) {
     try {
         const { email, password } = await request.json();
@@ -26,7 +33,7 @@ export async function POST(request: NextRequest) {
             username: user.username,
             email: user.email,
     
-        }, process.env.JWT_SECRET!, { expiresIn: "1h" });
+        } as MyTokenPayload, process.env.TOKEN_SECRET!, { expiresIn: "1h" });
         console.log("Generated token:", token);
 
         const response = NextResponse.json({
