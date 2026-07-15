@@ -9,7 +9,8 @@ connectDB();
 export async function POST(request: NextRequest) {
     try {
         const { username, email, password } = await request.json();
-
+        console.log("Received data:", { username, email, password });
+        
         const user = await User.findOne({ email });
 
         if(user){
@@ -18,18 +19,17 @@ export async function POST(request: NextRequest) {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const newUse = new User({
+        const newUser = new User({
             username,
             email,
             password: hashedPassword,
         });
-        const savedUser = await newUse.save();
+        const savedUser = await newUser.save();
         console.log("User created successfully:", savedUser);
         
-        const mailResponse = await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
+       const mailResponse = await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
 
         return NextResponse.json({ message: "User created successfully", mailResponse }, { status: 201 });
-    
 
     } catch (error) {
         return NextResponse.json({ error: (error as Error).message }, { status: 500 });

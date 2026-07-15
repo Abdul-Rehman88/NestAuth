@@ -21,7 +21,7 @@ export const sendEmail = async ({email, emailType, userId}: sendEmailParams) =>
     
         }
 
-        const transporter = nodemailer.createTransport({
+        const transport = nodemailer.createTransport({
             host: "sandbox.smtp.mailtrap.io",
             port: 2525,
             auth: {
@@ -44,7 +44,7 @@ export const sendEmail = async ({email, emailType, userId}: sendEmailParams) =>
             html: emailType === "VERIFY" ? emailVerification : passwordReset
         };
 
-        const mailResponse = await transporter.sendMail(mailOptions);
+        const mailResponse = await transport.sendMail(mailOptions);
         return mailResponse;
     }
     catch (error) {
