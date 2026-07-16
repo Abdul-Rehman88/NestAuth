@@ -18,7 +18,7 @@ export const getDataFromToken = (request: NextRequest) => {
         return NextResponse.json({ error: "Token not found" }, { status: 400 });
     }
 
-    const decodedToken: MyTokenPayload = jwt.verify(token, process.env.JWT_SECRET!) as MyTokenPayload;
+    const decodedToken: MyTokenPayload = jwt.verify(token, process.env.TOKEN_SECRET!) as MyTokenPayload;
     return decodedToken.id
     
     }catch (error){
