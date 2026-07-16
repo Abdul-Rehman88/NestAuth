@@ -7,16 +7,15 @@ connectDB();
 export async function POST(request: NextRequest) {
     try {
         const { token } = await request.json();
-
-        const user = await User.findOne({verificationToken: token, verificationTokenExpiry: { $gt: Date.now() }});
+        const user = await User.findOne({verifyToken: token, verifyTokenExpiry: { $gt: Date.now() }});
         
         if (!user) {
             return NextResponse.json({ error: "Invalid or expired token" }, { status: 400 });
         }
 
         user.isVerified = true;
-        user.verificationToken = undefined;
-        user.verificationTokenExpiry = undefined;
+        user.verifyToken = undefined;
+        user.verifyTokenExpiry = undefined;
 
         await user.save();
 

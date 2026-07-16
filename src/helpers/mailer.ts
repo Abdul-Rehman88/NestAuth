@@ -14,20 +14,21 @@ export const sendEmail = async ({email, emailType, userId}: sendEmailParams) =>
         const hashedToken = uuidv4();
         if (emailType === "VERIFY") {
             // Send verification email
-            await User.findByIdAndUpdate(userId, { verifyToken: hashedToken, verifyTokenExpiry: Date.now() + 3600000 }); // 1 hour expiry
+            await User.findByIdAndUpdate( userId, { $set: { verifyToken: hashedToken, verifyTokenExpiry: Date.now() + 3600000 } }); // 1 hour expiry
         } else if (emailType === "RESET") {
             // Send password reset email
-            await User.findByIdAndUpdate(userId, { forgetPasswordToken: hashedToken, forgetPasswordTokenExpiry: Date.now() + 3600000 }); // 1 hour expiry 
+            await User.findByIdAndUpdate(userId, { $set: { forgetPasswordToken: hashedToken, forgetPasswordTokenExpiry: Date.now() + 3600000 } }); // 1 hour expiry 
     
         }
 
         const transport = nodemailer.createTransport({
             host: "sandbox.smtp.mailtrap.io",
-            port: 2525,
+            port: 587,
+            secure: false,              // ← must be false for 587
             auth: {
                 user: process.env.mailTrapUser,
                 pass: process.env.mailTrapPass
-            }
+            },
         });
 
         const emailVerification= `<p>

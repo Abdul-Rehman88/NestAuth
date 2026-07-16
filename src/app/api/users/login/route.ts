@@ -16,7 +16,7 @@ interface MyTokenPayload {
 export async function POST(request: NextRequest) {
     try {
         const { email, password } = await request.json();
-        console.log("Received data:", { email, password });
+        console.log("email and password:", { email, password });
 
         const user = await User.findOne({ email });
         if (!user) {
@@ -34,7 +34,6 @@ export async function POST(request: NextRequest) {
             email: user.email,
     
         } as MyTokenPayload, process.env.TOKEN_SECRET!, { expiresIn: "1h" });
-        console.log("Generated token:", token);
 
         const response = NextResponse.json({
             message: "Login successful",
