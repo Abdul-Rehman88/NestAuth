@@ -9,7 +9,7 @@ connectDB();
 export async function POST(request: NextRequest) {
     try {
         const { username, email, password } = await request.json();
-        console.log("Received data:", { username, email, password });
+        console.log("Received data Signup:", { username, email, password });
         
         const user = await User.findOne({ email });
 
@@ -25,9 +25,9 @@ export async function POST(request: NextRequest) {
             password: hashedPassword,
         });
         const savedUser = await newUser.save();
-        console.log("User created successfully:", savedUser);
-        
-       const mailResponse = await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
+        console.log("User created successfully:", savedUser);   
+          
+        const mailResponse = await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
 
         return NextResponse.json({ message: "User created successfully", mailResponse }, { status: 201 });
 
