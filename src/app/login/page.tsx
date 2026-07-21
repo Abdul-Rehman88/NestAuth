@@ -26,7 +26,7 @@ function Login() {
         toast.error("verify your email")
       } else {
         toast.success("Login successful")
-        // router.push("/")
+        router.push("/profile")
       }
     }catch(error){
       console.log(error)
