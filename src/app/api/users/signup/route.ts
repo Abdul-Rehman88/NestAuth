@@ -1,7 +1,7 @@
 import { connectDB } from "@/dbConfig/dbConfig";
 import { NextResponse, NextRequest } from "next/server";
 import User from "@/models/userModel";
-import bcrypt from "bcryptjs";
+import bcryptjs from "bcryptjs";
 import { sendEmail } from "@/helpers/mailer";
 
 connectDB();
@@ -16,8 +16,8 @@ export async function POST(request: NextRequest) {
         if(user){
             return NextResponse.json({ error: "User already exists" }, { status: 400 });
         }
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        const salt = await bcryptjs.genSalt(10);
+        const hashedPassword = await bcryptjs.hash(password, salt);
 
         const newUser = new User({
             username,
